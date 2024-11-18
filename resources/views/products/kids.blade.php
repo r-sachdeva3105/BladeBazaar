@@ -5,10 +5,10 @@
     <!-- Header Section -->
     <div class="max-w-7xl mx-auto text-center">
         <h1 class="text-5xl font-extrabold text-gray-800 mb-4 tracking-wide">
-            Collections of Women
+            Collections of Kids
         </h1>
         <p class="text-gray-600 text-lg italic mb-12">
-            Discover the elegance and beauty of our women's collection.
+            Find the perfect outfits and accessories for kids of all ages.
         </p>
     </div>
 
@@ -16,11 +16,11 @@
     <div id="product-container" class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
         <!-- Product 1 -->
         <div class="group relative bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
-            <a href="{{ route('product.show', ['id' => 1]) }}">
-                <img src="{{ asset('assets/products/product_1.png') }}" alt="Women's Product 1" class="w-full h-[400px] object-cover">
+            <a href="{{ route('product.show', ['id' => 25]) }}">
+                <img src="{{ asset('assets/products/product_25.png') }}" alt="Kids Product 1" class="w-full h-[400px] object-cover">
             </a>
             <div class="p-4 text-center">
-                <span class="block text-gray-800 font-semibold text-lg">$49.99</span>
+                <span class="block text-gray-800 font-semibold text-lg">$29.99</span>
                 <button class="mt-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-all">
                     Add to Cart
                 </button>
@@ -29,11 +29,11 @@
 
         <!-- Product 2 -->
         <div class="group relative bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
-            <a href="{{ route('product.show', ['id' => 2]) }}">
-                <img src="{{ asset('assets/products/product_2.png') }}" alt="Women's Product 2" class="w-full h-[400px] object-cover">
+            <a href="{{ route('product.show', ['id' => 26]) }}">
+                <img src="{{ asset('assets/products/product_26.png') }}" alt="Kids Product 2" class="w-full h-[400px] object-cover">
             </a>
             <div class="p-4 text-center">
-                <span class="block text-gray-800 font-semibold text-lg">$39.99</span>
+                <span class="block text-gray-800 font-semibold text-lg">$34.99</span>
                 <button class="mt-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-all">
                     Add to Cart
                 </button>
@@ -42,11 +42,11 @@
 
         <!-- Product 3 -->
         <div class="group relative bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
-            <a href="{{ route('product.show', ['id' => 3]) }}">
-                <img src="{{ asset('assets/products/product_3.png') }}" alt="Women's Product 3" class="w-full h-[400px] object-cover">
+            <a href="{{ route('product.show', ['id' => 27]) }}">
+                <img src="{{ asset('assets/products/product_27.png') }}" alt="Kids Product 3" class="w-full h-[400px] object-cover">
             </a>
             <div class="p-4 text-center">
-                <span class="block text-gray-800 font-semibold text-lg">$59.99</span>
+                <span class="block text-gray-800 font-semibold text-lg">$39.99</span>
                 <button class="mt-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-all">
                     Add to Cart
                 </button>
@@ -74,33 +74,33 @@
     document.getElementById('load-more').addEventListener('click', function () {
         const products = [
             `<div class="group relative bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
-                <a href="{{ route('product.show', ['id' => 4]) }}">
-                    <img src="{{ asset('assets/products/product_4.png') }}" alt="Women's Product 4" class="w-full h-[400px] object-cover">
+                <a href="{{ route('product.show', ['id' => 28]) }}">
+                    <img src="{{ asset('assets/products/product_28.png') }}" alt="Kids Product 4" class="w-full h-[400px] object-cover">
                 </a>
                 <div class="p-4 text-center">
-                    <span class="block text-gray-800 font-semibold text-lg">$69.99</span>
+                    <span class="block text-gray-800 font-semibold text-lg">$25.99</span>
                     <button class="mt-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-all">
                         Add to Cart
                     </button>
                 </div>
             </div>`,
             `<div class="group relative bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
-                <a href="{{ route('product.show', ['id' => 5]) }}">
-                    <img src="{{ asset('assets/products/product_5.png') }}" alt="Women's Product 5" class="w-full h-[400px] object-cover">
+                <a href="{{ route('product.show', ['id' => 29]) }}">
+                    <img src="{{ asset('assets/products/product_29.png') }}" alt="Kids Product 5" class="w-full h-[400px] object-cover">
                 </a>
                 <div class="p-4 text-center">
-                    <span class="block text-gray-800 font-semibold text-lg">$74.99</span>
+                    <span class="block text-gray-800 font-semibold text-lg">$27.99</span>
                     <button class="mt-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-all">
                         Add to Cart
                     </button>
                 </div>
             </div>`,
             `<div class="group relative bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
-                <a href="{{ route('product.show', ['id' => 6]) }}">
-                    <img src="{{ asset('assets/products/product_6.png') }}" alt="Women's Product 6" class="w-full h-[400px] object-cover">
+                <a href="{{ route('product.show', ['id' => 30]) }}">
+                    <img src="{{ asset('assets/products/product_30.png') }}" alt="Kids Product 6" class="w-full h-[400px] object-cover">
                 </a>
                 <div class="p-4 text-center">
-                    <span class="block text-gray-800 font-semibold text-lg">$89.99</span>
+                    <span class="block text-gray-800 font-semibold text-lg">$31.99</span>
                     <button class="mt-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-all">
                         Add to Cart
                     </button>

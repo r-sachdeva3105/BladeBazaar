@@ -15,19 +15,43 @@
     <!-- Product Section -->
     <div id="product-container" class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
         <!-- Product 1 -->
-        <a href="{{ route('product.show', ['id' => 15]) }}" class="group relative bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
-            <img src="{{ asset('assets/products/product_15.png') }}" alt="Men's Product 1" class="w-full h-[400px] object-cover">
-        </a>
+        <div class="group relative bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
+            <a href="{{ route('product.show', ['id' => 15]) }}">
+                <img src="{{ asset('assets/products/product_15.png') }}" alt="Men's Product 1" class="w-full h-[400px] object-cover">
+            </a>
+            <div class="p-4 text-center">
+                <span class="block text-gray-800 font-semibold text-lg">$49.99</span>
+                <button class="mt-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-all">
+                    Add to Cart
+                </button>
+            </div>
+        </div>
 
         <!-- Product 2 -->
-        <a href="{{ route('product.show', ['id' => 13]) }}" class="group relative bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
-            <img src="{{ asset('assets/products/product_13.png') }}" alt="Men's Product 2" class="w-full h-[400px] object-cover">
-        </a>
+        <div class="group relative bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
+            <a href="{{ route('product.show', ['id' => 13]) }}">
+                <img src="{{ asset('assets/products/product_13.png') }}" alt="Men's Product 2" class="w-full h-[400px] object-cover">
+            </a>
+            <div class="p-4 text-center">
+                <span class="block text-gray-800 font-semibold text-lg">$39.99</span>
+                <button class="mt-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-all">
+                    Add to Cart
+                </button>
+            </div>
+        </div>
 
         <!-- Product 3 -->
-        <a href="{{ route('product.show', ['id' => 14]) }}" class="group relative bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
-            <img src="{{ asset('assets/products/product_14.png') }}" alt="Men's Product 3" class="w-full h-[400px] object-cover">
-        </a>
+        <div class="group relative bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
+            <a href="{{ route('product.show', ['id' => 14]) }}">
+                <img src="{{ asset('assets/products/product_14.png') }}" alt="Men's Product 3" class="w-full h-[400px] object-cover">
+            </a>
+            <div class="p-4 text-center">
+                <span class="block text-gray-800 font-semibold text-lg">$59.99</span>
+                <button class="mt-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-all">
+                    Add to Cart
+                </button>
+            </div>
+        </div>
     </div>
 
     <!-- Stylish See More Button -->
@@ -50,15 +74,39 @@
 <script>
     document.getElementById('load-more').addEventListener('click', function () {
         const products = [
-            `<a href="{{ route('product.show', ['id' => 16]) }}" class="group relative bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
-                <img src="{{ asset('assets/products/product_16.png') }}" alt="Men's Product 4" class="w-full h-[400px] object-cover">
-            </a>`,
-            `<a href="{{ route('product.show', ['id' => 17]) }}" class="group relative bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
-                <img src="{{ asset('assets/products/product_17.png') }}" alt="Men's Product 5" class="w-full h-[400px] object-cover">
-            </a>`,
-            `<a href="{{ route('product.show', ['id' => 18]) }}" class="group relative bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
-                <img src="{{ asset('assets/products/product_18.png') }}" alt="Men's Product 6" class="w-full h-[400px] object-cover">
-            </a>`
+            `<div class="group relative bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
+                <a href="{{ route('product.show', ['id' => 16]) }}">
+                    <img src="{{ asset('assets/products/product_16.png') }}" alt="Men's Product 4" class="w-full h-[400px] object-cover">
+                </a>
+                <div class="p-4 text-center">
+                    <span class="block text-gray-800 font-semibold text-lg">$69.99</span>
+                    <button class="mt-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-all">
+                        Add to Cart
+                    </button>
+                </div>
+            </div>`,
+            `<div class="group relative bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
+                <a href="{{ route('product.show', ['id' => 17]) }}">
+                    <img src="{{ asset('assets/products/product_17.png') }}" alt="Men's Product 5" class="w-full h-[400px] object-cover">
+                </a>
+                <div class="p-4 text-center">
+                    <span class="block text-gray-800 font-semibold text-lg">$79.99</span>
+                    <button class="mt-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-all">
+                        Add to Cart
+                    </button>
+                </div>
+            </div>`,
+            `<div class="group relative bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
+                <a href="{{ route('product.show', ['id' => 18]) }}">
+                    <img src="{{ asset('assets/products/product_18.png') }}" alt="Men's Product 6" class="w-full h-[400px] object-cover">
+                </a>
+                <div class="p-4 text-center">
+                    <span class="block text-gray-800 font-semibold text-lg">$89.99</span>
+                    <button class="mt-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-all">
+                        Add to Cart
+                    </button>
+                </div>
+            </div>`
         ];
 
         const container = document.getElementById('product-container');
