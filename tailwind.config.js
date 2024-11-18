@@ -10,3 +10,17 @@ export default {
     },
     plugins: [],
 };
+
+module.exports = {
+    theme: {
+        extend: {
+            colors: {
+                brown: {
+                    600: '#8B4513',
+                    700: '#5D2C0C',
+                },
+            },
+        },
+    },
+};
+
