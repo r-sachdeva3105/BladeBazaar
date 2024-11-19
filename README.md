@@ -1,11 +1,11 @@
 # BladeBazaar
 
 ## Team Members:
-Pranav Panchal
-Rajat Sachdeva
-Shrabani Sagareeka
-Mitali Sharma
-Nayeem Khan
+### Pranav Panchal
+### Rajat Sachdeva
+### Shrabani Sagareeka
+### Mitali Sharma
+### Nayeem Khan
 
 ## Screenshots
 ![image](https://github.com/user-attachments/assets/524631bd-3127-49be-b135-b831008036bc)
