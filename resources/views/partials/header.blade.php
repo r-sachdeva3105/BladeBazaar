@@ -3,7 +3,7 @@
     <div class="max-w-7xl mx-auto px-6 lg:px-8 py-3 flex justify-between items-center border-b border-gray-700">
         <!-- Left Section - Company Name -->
         <div class="text-3xl font-extrabold tracking-tight">
-            <a href="/" class="hover:text-gray-400 flex items-center"><img src="assets/logo.png" width="50" alt="BladeBazaar">BladeBazaar</a>
+            <a href="/" class="hover:text-gray-400 flex items-center"><img src="{{ asset('assets/logo.png') }}" width="50" alt="BladeBazaar">BladeBazaar</a>
         </div>
 
         <!-- Center Section - Contact Info -->
