@@ -3,7 +3,7 @@
         <!-- Company Info -->
         <div class="flex items-center justify-between">
             <h3 class="text-lg font-bold flex items-center">
-                <img src="assets/logo.png" width="30" alt="BladeBazaar" class="mr-2">
+                <img src="logo.png" width="30" alt="BladeBazaar" class="mr-2">
                 BladeBazaar
             </h3>
             <div class="border-gray-800 text-center text-gray-500">

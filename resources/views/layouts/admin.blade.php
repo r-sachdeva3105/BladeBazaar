@@ -17,10 +17,12 @@
     <link rel="modulepreload" href="http://127.0.0.1:8000/build/assets/app-z8A_VDJZ.js" />
     <link rel="stylesheet" href="http://127.0.0.1:8000/build/assets/app-CU11jDOT.css" />
     <script type="module" src="http://127.0.0.1:8000/build/assets/app-z8A_VDJZ.js"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <!-- Custom CSS to ensure footer is always at the bottom -->
     <style>
-        html, body {
+        html,
+        body {
             height: 100%;
         }
 
@@ -52,7 +54,7 @@
         <!-- Main Content -->
         <div class="container-fluid main-content">
             <div class="row">
-               
+
 
                 <!-- Content Section -->
                 <main class="col-md-9 col-lg-10 p-4">

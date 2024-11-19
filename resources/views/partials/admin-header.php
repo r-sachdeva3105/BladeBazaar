@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <a class="navbar-brand" href="admin.dashboard">
             <!-- BladeBazaar Logo -->
-            <img src="assets/logo.png" alt="BladeBazaar" width="150" height="50">
+            <img src="logo.png" alt="BladeBazaar" width="50">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
