@@ -22,6 +22,7 @@ Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
 
+// Password Reset Page Route
 Route::get('/reset', function () {
     return view('auth.password-reset');
 })->name('password-reset');
@@ -55,32 +56,27 @@ Route::get('/contact', function () {
 Route::prefix('admin')->name('admin.')->group(function () {
 
     // Admin Dashboard Route
-    Route::get('/', function () {
+    Route::get('/dashboard', function () {
         return view('admin.dashboard');
     })->name('dashboard');
 
-    // Manage Products Page (Admin)
-    Route::get('/products', function () {
-        return view('admin.products.index');
-    })->name('products.index');
+    // Manage Categories Page
+    Route::get('/categories', function () {
+        return view('admin.categories');
+    })->name('categories');  
 
-    // Add Product Page (Admin)
-    Route::get('/products/create', function () {
-        return view('admin.products.create');
-    })->name('products.create');
-
-    // Edit Product Page (Admin)
-    Route::get('/products/{id}/edit', function ($id) {
-        return view('admin.products.edit', ['id' => $id]);
-    })->name('products.edit');
-
-    // Manage Orders Page (Admin)
+    // Manage Orders Page
     Route::get('/orders', function () {
-        return view('admin.orders.index');
-    })->name('orders.index');
+        return view('admin.orders');
+    })->name('orders');
 
-    // Manage Users Page (Admin)
+    // Manage Products Page
+    Route::get('/products', function () {
+        return view('admin.products');
+    })->name('products');
+
+    // Manage Users Page
     Route::get('/users', function () {
-        return view('admin.users.index');
-    })->name('users.index');
+        return view('admin.users');
+    })->name('users');
 });

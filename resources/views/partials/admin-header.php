@@ -1,31 +1,31 @@
-<header class="bg-gray-900 text-white shadow-lg">
-    <!-- Top Row - Brand and Navigation -->
-    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-3 flex justify-between items-center border-b border-gray-700">
-        <!-- Left Section - Company Name -->
-        <div class="text-3xl font-extrabold tracking-tight">
-            <a href="/" class="hover:text-gray-400 flex items-center">
-                <img src="assets/logo.png" width="50" alt="BladeBazaar">BladeBazaar
-            </a>
+<!-- admin-header.php -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="admin.dashboard">
+            <!-- BladeBazaar Logo -->
+            <img src="assets/logo.png" alt="BladeBazaar" width="150" height="50">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/dashboard">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/categories">Categories</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/products">Products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/orders">Orders</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/users">Users</a>
+                </li>
+            </ul>
         </div>
-
-        <!-- Right Section - Navigation and Cart Icon -->
-        <nav class="hidden md:flex space-x-8 text-lg">
-            <a href="/admin" class="hover:text-gray-400">Dashboard</a>
-            <a href="#" class="hover:text-gray-400">Categories</a>
-            <a href="#" class="hover:text-gray-400">Products</a>
-            <a href="#" class="hover:text-gray-400">Orders</a>
-            <a href="#" class="hover:text-gray-400">Users</a>
-        </nav>
     </div>
-
-    <!-- Mobile Menu -->
-    <nav id="mobile-menu" class="md:hidden bg-gray-900 text-gray-300 hidden px-6 py-4">
-        <ul class="space-y-4 text-lg">
-            <li><a href="/admin" class="block hover:text-gray-400">Dashboard</a></li>
-            <li><a href="#" class="block hover:text-gray-400">Categories</a></li>
-            <li><a href="#" class="block hover:text-gray-400">Products</a></li>
-            <li><a href="#" class="block hover:text-gray-400">Orders</a></li>
-            <li><a href="#" class="block hover:text-gray-400">Users</a></li>
-        </ul>
-    </nav>
-</header>
+</nav>
