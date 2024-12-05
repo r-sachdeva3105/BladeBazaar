@@ -3,5 +3,10 @@
         "name": "pranav",
         "email": "pranav@humber.ca",
         "password": "$2y$12$oAiXz.GdOW8paf1Y1a8W1OoJBwC.Ijt3MizfqlMZ3f5PPtPiAIlwC"
+    },
+    {
+        "name": "rajat",
+        "email": "rajat@humber.ca",
+        "password": "$2y$12$wYLSghdp1BZz0DgnnToHlOeu2IzHGbRxJH1CctYowN3BcK3zImkRa"
     }
 ]
