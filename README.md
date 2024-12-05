@@ -5,7 +5,7 @@
 ### Rajat Sachdeva
 ### Shrabani Sagareeka
 ### Mitali Sharma
-### Nayeem Khan
+### Abdun Nayeem Khan
 
 ## Screenshots
 ![image](https://github.com/user-attachments/assets/524631bd-3127-49be-b135-b831008036bc)

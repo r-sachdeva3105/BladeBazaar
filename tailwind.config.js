@@ -9,8 +9,8 @@ export default {
         extend: {
             colors: {
                 brown: {
-                    600: '#8B4513',
-                    700: '#5D2C0C',
+                    600: "#8B4513", // SaddleBrown
+                    700: "#5D2C0C", // Darker brown
                 },
             },
         },
