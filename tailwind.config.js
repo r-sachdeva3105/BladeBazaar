@@ -6,13 +6,6 @@ export default {
         "./resources/**/*.vue",
     ],
     theme: {
-        extend: {},
-    },
-    plugins: [],
-};
-
-module.exports = {
-    theme: {
         extend: {
             colors: {
                 brown: {
@@ -22,5 +15,7 @@ module.exports = {
             },
         },
     },
+    plugins: [],
 };
-
+ 
+ 

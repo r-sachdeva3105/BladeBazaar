@@ -5,8 +5,15 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-3xl font-semibold text-gray-700 mb-8">Your Shopping Cart</h2>
 
+        @if(session('success'))
+            <div class="bg-green-500 text-white p-4 rounded mb-4">{{ session('success') }}</div>
+        @endif
+
+        @if(empty($cart) || count($cart) === 0)
+            <p class="text-gray-600">Your cart is empty. <a href="{{ route('products') }}" class="text-blue-500 hover:underline">Continue Shopping</a></p>
+        @else
         <!-- Cart Table -->
-        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+        <div class="bg-white shadow-md rounded-lg overflow-hidden mb-6">
             <table class="min-w-full text-sm">
                 <thead class="bg-gray-100">
                     <tr>
@@ -18,51 +25,44 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Loop through each cart item -->
-                    <tr class="border-b border-gray-200">
-                        <td class="py-4 px-6 flex items-center space-x-4">
-                            <img src="https://via.placeholder.com/100" alt="Product" class="w-20 h-20 object-cover rounded-lg">
-                            <span class="text-gray-700">Product Name</span>
-                        </td>
-                        <td class="py-4 px-6 text-gray-700">$49.99</td>
-                        <td class="py-4 px-6">
-                            <input type="number" value="1" min="1" class="w-16 p-2 border border-gray-300 rounded-lg">
-                        </td>
-                        <td class="py-4 px-6 text-gray-700">$49.99</td>
-                        <td class="py-4 px-6 text-center">
-                            <button class="text-red-500 hover:text-red-700">Remove</button>
-                        </td>
-                    </tr>
-                    <tr class="border-b border-gray-200">
-                        <td class="py-4 px-6 flex items-center space-x-4">
-                            <img src="https://via.placeholder.com/100" alt="Product" class="w-20 h-20 object-cover rounded-lg">
-                            <span class="text-gray-700">Product Name 2</span>
-                        </td>
-                        <td class="py-4 px-6 text-gray-700">$89.99</td>
-                        <td class="py-4 px-6">
-                            <input type="number" value="2" min="1" class="w-16 p-2 border border-gray-300 rounded-lg">
-                        </td>
-                        <td class="py-4 px-6 text-gray-700">$179.98</td>
-                        <td class="py-4 px-6 text-center">
-                            <button class="text-red-500 hover:text-red-700">Remove</button>
-                        </td>
-                    </tr>
+                    @php $total = 0; @endphp
+                    @foreach($cart as $item)
+                        @php $subtotal = $item['quantity'] * (float) substr($item['price'], 1); @endphp
+                        @php $total += $subtotal; @endphp
+                        <tr class="border-b border-gray-200">
+                            <td class="py-4 px-6 flex items-center space-x-4">
+                                <img src="{{ asset($item['image']) }}" alt="{{ $item['title'] }}" class="w-20 h-20 object-cover rounded-lg">
+                                <span class="text-gray-700">{{ $item['title'] }}</span>
+                            </td>
+                            <td class="py-4 px-6 text-gray-700">{{ $item['price'] }}</td>
+                            <td class="py-4 px-6">
+                                <form action="{{ route('cart.update') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="product_id" value="{{ $item['id'] }}">
+                                    <input type="number" name="quantity" value="{{ $item['quantity'] }}" class="w-16 p-2 border rounded-lg">
+                                    <button type="submit" class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Update</button>
+                                </form>
+                            </td>
+                            <td class="py-4 px-6 text-gray-700">${{ number_format($subtotal, 2) }}</td>
+                            <td class="py-4 px-6 text-center">
+                                <form action="{{ route('cart.remove') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="product_id" value="{{ $item['id'] }}">
+                                    <button type="submit" class="text-red-500 hover:text-red-700">Remove</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
 
-        <!-- Cart Summary -->
-        <div class="mt-8 flex justify-between bg-white shadow-md rounded-lg p-6 items-center">
-            <div>
-                <h3 class="text-lg font-semibold text-gray-700">Order Summary</h3>
-                <p class="text-gray-600 mt-2">Items: 3</p>
-                <p class="text-gray-600">Total: $229.97</p>
-            </div>
-            <div class="flex flex-col items-center">
-                <button class="w-full py-2 px-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 mb-4"><a href="/checkout">Proceed to Checkout</a></button>
-                <a href="/products" class="text-blue-500 hover:text-blue-700 text-sm">Continue Shopping</a>
-            </div>
+        <!-- Total and Checkout -->
+        <div class="flex justify-between items-center mt-8">
+            <span class="text-xl font-semibold text-gray-700">Total: ${{ number_format($total, 2) }}</span>
+            <a href="{{ route('checkout') }}" class="px-6 py-3 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600">Proceed to Checkout</a>
         </div>
+        @endif
     </div>
 </div>
 @endsection

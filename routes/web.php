@@ -1,133 +1,264 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
+
+$mockData = include base_path('routes/mockData.php');
 
 // Home Page Route
 Route::get('/', function () {
-    return view('home.index');
+    $mockData = include base_path('routes/mockData.php');
+
+    // Fetch a mix of random products (e.g., 2 from each category)
+    $popularProducts = array_merge(
+        array_slice($mockData['men'], 0, 2),
+        array_slice($mockData['women'], 0, 2),
+        array_slice($mockData['kids'], 0, 2)
+    );
+
+    return view('home.index', ['popularProducts' => $popularProducts]);
 })->name('home');
 
-// Products Page Route
-Route::get('/products', function () {
-    return view('products.index');
-})->name('products');
 
-// Product Detail Page Route
-Route::get('/product/{id}', function ($id) {
-    return view('products.show', ['id' => $id]);
-})->name('product.show');
-
-// Login Page Route
+// Login Page - GET
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
 
-// Password Reset Page Route
-Route::get('/reset', function () {
-    return view('auth.password-reset');
-})->name('password-reset');
+// Login Form Submission - Mock Data
+Route::post('/login', function (Request $request) {
+    $credentials = $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
 
-// Register Page Route
+    $mockDataPath = storage_path('mock_users.json');
+    if (!File::exists($mockDataPath)) {
+        return back()->withErrors(['email' => 'No registered users found.']);
+    }
+
+    $mockUsers = json_decode(File::get($mockDataPath), true);
+    $user = collect($mockUsers)->firstWhere('email', $credentials['email']);
+
+    if (!$user || !Hash::check($credentials['password'], $user['password'])) {
+        return back()->withErrors(['email' => 'The provided credentials are incorrect.']);
+    }
+
+    Session::put('user', [
+        'name' => $user['name'],
+        'email' => $user['email'],
+    ]);
+
+    return redirect()->route('home')->with('success', 'You are now logged in.');
+})->name('login.perform');
+
+// Logout Route
+Route::post('/logout', function () {
+    Session::forget('user');
+    return redirect('/')->with('success', 'You have been logged out.');
+})->name('logout');
+
+// Register Page - GET
 Route::get('/register', function () {
     return view('auth.register');
 })->name('register');
 
-// Cart Page Route
+// Register Form Submission - Mock Data
+Route::post('/register', function (Request $request) {
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email',
+        'password' => 'required|confirmed|min:6',
+    ]);
+
+    $mockDataPath = storage_path('mock_users.json');
+    $mockUsers = File::exists($mockDataPath) ? json_decode(File::get($mockDataPath), true) : [];
+
+    foreach ($mockUsers as $user) {
+        if ($user['email'] === $validated['email']) {
+            return back()->withErrors(['email' => 'The email address is already registered.']);
+        }
+    }
+
+    $mockUsers[] = [
+        'name' => $validated['name'],
+        'email' => $validated['email'],
+        'password' => Hash::make($validated['password']),
+    ];
+
+    File::put($mockDataPath, json_encode($mockUsers, JSON_PRETTY_PRINT));
+
+    return redirect()->route('login')->with('success', 'Account created successfully. Please log in.');
+})->name('register.perform');
+
+// Cart Routes
 Route::get('/cart', function () {
-    return view('products.cart');
+    $cart = Session::get('cart', []);
+    return view('products.cart', ['cart' => $cart]);
 })->name('cart');
 
-// Checkout Page Route
-Route::get('/checkout', function () {
-    return view('products.checkout');
-})->name('checkout');
+Route::post('/cart/add', function (Request $request) use ($mockData) {
+    $productId = $request->input('product_id');
+    $allProducts = array_merge($mockData['men'], $mockData['women'], $mockData['kids']);
+    $product = collect($allProducts)->firstWhere('id', $productId);
 
-// About Us Page Route (Optional)
+    if (!$product) {
+        return redirect()->route('cart')->with('error', 'Product not found.');
+    }
+
+    $cart = Session::get('cart', []);
+
+    // Check if product is already in the cart
+    if (isset($cart[$productId])) {
+        $cart[$productId]['quantity'] += 1; // Increment quantity
+    } else {
+        $product['quantity'] = 1;
+        $cart[$productId] = $product; // Store product using product ID as key
+    }
+
+    Session::put('cart', $cart);
+
+    return redirect()->route('cart')->with('success', 'Product added to cart.');
+})->name('cart.add');
+
+
+Route::post('/cart/update', function (Request $request) {
+    $cart = Session::get('cart', []);
+    $productId = $request->input('product_id');
+    $quantity = (int) $request->input('quantity');
+
+    if (isset($cart[$productId])) {
+        if ($quantity > 0) {
+            $cart[$productId]['quantity'] = $quantity; // Update quantity
+        } else {
+            unset($cart[$productId]); // Remove item if quantity is 0
+        }
+    }
+
+    Session::put('cart', $cart);
+
+    return redirect()->route('cart')->with('success', 'Cart updated successfully!');
+})->name('cart.update');
+
+
+Route::post('/cart/remove', function (Request $request) {
+    $cart = Session::get('cart', []);
+    $productId = $request->input('product_id');
+
+    if (isset($cart[$productId])) {
+        unset($cart[$productId]); // Remove product from cart
+    }
+
+    Session::put('cart', $cart);
+
+    return redirect()->route('cart')->with('success', 'Product removed from cart.');
+})->name('cart.remove');
+
+
+// Product Details
+Route::get('/product/{id}', function ($id) {
+    $mockData = include base_path('routes/mockData.php');
+    $allProducts = array_merge(
+        $mockData['men'],
+        $mockData['women'],
+        $mockData['kids']
+    );
+
+    $product = collect($allProducts)->firstWhere('id', $id);
+
+    if (!$product) {
+        abort(404, 'Product not found');
+    }
+
+    return view('products.show', ['product' => $product]);
+})->name('product.show');
+
+// Categories
+Route::get('/men', function () {
+    $mockData = include base_path('routes/mockData.php');
+    return view('products.men', ['products' => $mockData['men']]);
+})->name('products.men');
+
+Route::get('/women', function () {
+    $mockData = include base_path('routes/mockData.php');
+    return view('products.women', ['products' => $mockData['women']]);
+})->name('women');
+
+Route::get('/kids', function () {
+    $mockData = include base_path('routes/mockData.php');
+    return view('products.kids', ['products' => $mockData['kids']]);
+})->name('kids');
+
+Route::get('/products', function () {
+    return view('products.index');
+})->name('products');
+
+
+// About Us Page Route
 Route::get('/about', function () {
     return view('about.index');
 })->name('about');
 
-// Contact Us Page Route (Optional)
+// Contact Us Page Route
 Route::get('/contact', function () {
     return view('contact.index');
 })->name('contact');
 
-//Categories [Men]
-Route::get('/men', function () {
-    return view('products.men');
-})->name('products.men');
-
-//Categories [Women]
-Route::get('/women', function () {
-    return view('products.women');
-})->name('women');
-
-//Categories [Kids]
-Route::get('/kids', function () {
-    return view('products.kids');
-})->name('kids');
-
-
-
-Route::get('/product/{id}', function ($id) {
-    // Combine all product data into one array
-    $products = [
-        // Women's Products
-        1 => ['image' => 'assets/products/product_1.png', 'title' => 'Fur Jacket', 'description' => 'A luxurious fur jacket for winter.', 'price' => '$99.99'],
-        2 => ['image' => 'assets/products/product_2.png', 'title' => 'Pink Top', 'description' => 'A stylish pink top for casual wear.', 'price' => '$39.99'],
-        3 => ['image' => 'assets/products/product_3.png', 'title' => 'Sports Tank Top', 'description' => 'A comfortable sports tank top.', 'price' => '$29.99'],
-        4 => ['image' => 'assets/products/product_4.png', 'title' => 'Knit Top', 'description' => 'A cozy knit top for autumn.', 'price' => '$49.99'],
-        5 => ['image' => 'assets/products/product_5.png', 'title' => 'Evening Blouse', 'description' => 'An elegant blouse for evening events.', 'price' => '$59.99'],
-        6 => ['image' => 'assets/products/product_6.png', 'title' => 'Modest Wear', 'description' => 'Stylish and modest wear.', 'price' => '$69.99'],
-
-        // Men's Products
-        15 => ['image' => 'assets/products/product_15.png', 'title' => 'Men\'s Jacket', 'description' => 'A stylish and durable men\'s jacket. Perfect for all seasons.', 'price' => '$79.99'],
-        13 => ['image' => 'assets/products/product_13.png', 'title' => 'Hoodie', 'description' => 'A comfortable and trendy hoodie. Perfect for casual wear.', 'price' => '$49.99'],
-        14 => ['image' => 'assets/products/product_14.png', 'title' => 'Men\'s Coat', 'description' => 'A formal men\'s coat for office and events.', 'price' => '$89.99'],
-
-        // Kids' Products
-        25 => ['image' => 'assets/products/product_25.png', 'title' => 'Kids Lemon Hoodie', 'description' => 'A cute lemon-themed hoodie for kids, perfect for cool weather.', 'price' => '$14.99'],
-        26 => ['image' => 'assets/products/product_26.png', 'title' => 'Soccer Print Hoodie', 'description' => 'A trendy soccer-print hoodie for young football enthusiasts.', 'price' => '$24.99'],
-        27 => ['image' => 'assets/products/product_27.png', 'title' => 'Striped Hoodie', 'description' => 'A stylish and comfortable striped hoodie for all occasions.', 'price' => '$29.99'],
-        28 => ['image' => 'assets/products/product_28.png', 'title' => 'Dino Sweatshirt', 'description' => 'A cozy sweatshirt with a dinosaur print, perfect for fun days.', 'price' => '$9.99'],
-        29 => ['image' => 'assets/products/product_29.png', 'title' => 'Kids Track Jacket', 'description' => 'A lightweight and durable track jacket for active kids.', 'price' => '$12.99'],
-        30 => ['image' => 'assets/products/product_30.png', 'title' => 'Quilted Winter Jacket', 'description' => 'A warm quilted jacket for keeping kids cozy during winter.', 'price' => '$19.99'],
-    ];
-
-    // Validate if the product ID exists
-    if (!array_key_exists($id, $products)) {
-        abort(404, 'Product not found');
+// Checkout Page Route
+Route::get('/checkout', function () {
+    $cart = Session::get('cart', []);
+    if (empty($cart)) {
+        return redirect()->route('cart')->with('error', 'Your cart is empty.');
     }
 
-    return view('products.show', ['product' => $products[$id]]);
-})->name('product.show');
+    return view('products.checkout', ['cart' => $cart]); // Load the checkout page
+})->name('checkout');
+
+// Perform Checkout (Mock Process)
+Route::post('/checkout', function (Request $request) {
+    $cart = Session::get('cart', []);
+
+    if (empty($cart)) {
+        return redirect()->route('checkout')->with('error', 'Your cart is empty.');
+    }
+
+    // Validate payment details (mock validation)
+    $request->validate([
+        'card_number' => 'required|digits:16',
+        'expiry_date' => 'required',
+        'cvv' => 'required|digits:3',
+    ]);
+
+    // Clear the cart after checkout
+    Session::forget('cart');
+
+    return redirect()->route('home')->with('success', 'Your order has been placed successfully!');
+})->name('checkout.perform');
 
 
+//----------------------------------------ADMIN---------------------------------------------------------------------------------------------------------//
 
 // Admin Routes
 Route::prefix('admin')->name('admin.')->group(function () {
-
-    // Admin Dashboard Route
     Route::get('/dashboard', function () {
         return view('admin.dashboard');
     })->name('dashboard');
 
-    // Manage Categories Page
     Route::get('/categories', function () {
         return view('admin.categories');
-    })->name('categories');  
+    })->name('categories');
 
-    // Manage Orders Page
     Route::get('/orders', function () {
         return view('admin.orders');
     })->name('orders');
 
-    // Manage Products Page
     Route::get('/products', function () {
         return view('admin.products');
     })->name('products');
 
-    // Manage Users Page
     Route::get('/users', function () {
         return view('admin.users');
     })->name('users');

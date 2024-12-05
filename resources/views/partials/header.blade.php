@@ -51,7 +51,20 @@
                         </div>
                     </li>
 
-                    <li><a href="/login" class="hover:text-gray-400">Login</a></li>
+                    <!-- Conditional Links -->
+                    @if (Session::has('user'))
+                        <li><a href="#" class="hover:text-gray-400">Welcome, {{ Session::get('user.name') }}</a></li>
+                        <li>
+                            <form action="{{ route('logout') }}" method="POST" class="inline">
+                                @csrf
+                                <button type="submit" class="hover:text-gray-400">Logout</button>
+                            </form>
+                        </li>
+                    @else
+                        <li><a href="{{ route('login') }}" class="hover:text-gray-400">Login</a></li>
+                        <li><a href="{{ route('register') }}" class="hover:text-gray-400">Register</a></li>
+                    @endif
+
                     <li><a href="/cart" class="hover:text-gray-400">
                             <!-- Cart Icon -->
                             <i class="fas fa-shopping-cart text-xl"></i>
@@ -78,7 +91,17 @@
             <li><a href="/men" class="block hover:text-gray-400">Men</a></li>
             <li><a href="/women" class="block hover:text-gray-400">Women</a></li>
             <li><a href="/kids" class="block hover:text-gray-400">Kids</a></li>
-            <li><a href="/login" class="block hover:text-gray-400">Login</a></li>
+            @if (Session::has('user'))
+                <li>
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="block hover:text-gray-400">Logout</button>
+                    </form>
+                </li>
+            @else
+                <li><a href="{{ route('login') }}" class="block hover:text-gray-400">Login</a></li>
+                <li><a href="{{ route('register') }}" class="block hover:text-gray-400">Register</a></li>
+            @endif
             <li><a href="/cart" class="block hover:text-gray-400">Cart</a></li>
         </ul>
     </nav>

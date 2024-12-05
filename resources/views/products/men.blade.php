@@ -8,50 +8,35 @@
             Collections of Men
         </h1>
         <p class="text-gray-600 text-lg italic mb-12">
-            It is a long established fact that a reader distracted.
+            Discover the latest trends for men.
         </p>
     </div>
 
     <!-- Product Section -->
     <div id="product-container" class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-        <!-- Product 1 -->
-        <div class="group relative bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
-            <a href="{{ route('product.show', ['id' => 15]) }}">
-                <img src="{{ asset('assets/products/product_15.png') }}" alt="Men's Product 1" class="w-full h-[400px] object-cover">
-            </a>
-            <div class="p-4 text-center">
-                <span class="block text-gray-800 font-semibold text-lg">$49.99</span>
-                <button class="mt-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-all">
-                    Add to Cart
-                </button>
+        <!-- Loop through products -->
+        @foreach($products as $product)
+            <div class="group relative bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
+                <a href="{{ route('product.show', ['id' => $product['id']]) }}">
+                    <img src="{{ asset($product['image']) }}" alt="{{ $product['title'] }}" class="w-full h-[400px] object-cover">
+                </a>
+                <div class="p-4 text-center">
+                    <span class="block text-gray-800 font-semibold text-lg">{{ $product['title'] }}</span>
+                    <span class="block text-gray-600">{{ $product['price'] }}</span>
+                    <form action="{{ route('cart.add') }}" method="POST" class="mt-2">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product['id'] }}">
+                        <input type="hidden" name="product_title" value="{{ $product['title'] }}">
+                        <input type="hidden" name="product_price" value="{{ $product['price'] }}">
+                        <input type="hidden" name="product_image" value="{{ $product['image'] }}">
+                        <button type="submit" class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-all">
+                            Add to Cart
+                        </button>
+                    </form>
+                </div>
             </div>
-        </div>
+        @endforeach
 
-        <!-- Product 2 -->
-        <div class="group relative bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
-            <a href="{{ route('product.show', ['id' => 13]) }}">
-                <img src="{{ asset('assets/products/product_13.png') }}" alt="Men's Product 2" class="w-full h-[400px] object-cover">
-            </a>
-            <div class="p-4 text-center">
-                <span class="block text-gray-800 font-semibold text-lg">$39.99</span>
-                <button class="mt-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-all">
-                    Add to Cart
-                </button>
-            </div>
-        </div>
-
-        <!-- Product 3 -->
-        <div class="group relative bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
-            <a href="{{ route('product.show', ['id' => 14]) }}">
-                <img src="{{ asset('assets/products/product_14.png') }}" alt="Men's Product 3" class="w-full h-[400px] object-cover">
-            </a>
-            <div class="p-4 text-center">
-                <span class="block text-gray-800 font-semibold text-lg">$59.99</span>
-                <button class="mt-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-all">
-                    Add to Cart
-                </button>
-            </div>
-        </div>
     </div>
 
     <!-- Stylish See More Button -->
@@ -70,53 +55,33 @@
     </div>
 </div>
 
-<!-- JavaScript Section -->
 <script>
     document.getElementById('load-more').addEventListener('click', function () {
-        const products = [
-            `<div class="group relative bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
-                <a href="{{ route('product.show', ['id' => 16]) }}">
-                    <img src="{{ asset('assets/products/product_16.png') }}" alt="Men's Product 4" class="w-full h-[400px] object-cover">
-                </a>
-                <div class="p-4 text-center">
-                    <span class="block text-gray-800 font-semibold text-lg">$69.99</span>
-                    <button class="mt-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-all">
-                        Add to Cart
-                    </button>
-                </div>
-            </div>`,
-            `<div class="group relative bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
-                <a href="{{ route('product.show', ['id' => 17]) }}">
-                    <img src="{{ asset('assets/products/product_17.png') }}" alt="Men's Product 5" class="w-full h-[400px] object-cover">
-                </a>
-                <div class="p-4 text-center">
-                    <span class="block text-gray-800 font-semibold text-lg">$79.99</span>
-                    <button class="mt-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-all">
-                        Add to Cart
-                    </button>
-                </div>
-            </div>`,
-            `<div class="group relative bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
-                <a href="{{ route('product.show', ['id' => 18]) }}">
-                    <img src="{{ asset('assets/products/product_18.png') }}" alt="Men's Product 6" class="w-full h-[400px] object-cover">
-                </a>
-                <div class="p-4 text-center">
-                    <span class="block text-gray-800 font-semibold text-lg">$89.99</span>
-                    <button class="mt-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-all">
-                        Add to Cart
-                    </button>
-                </div>
-            </div>`
-        ];
+        const additionalProducts = @json($products); // Use Laravel's JSON directive to pass products
 
         const container = document.getElementById('product-container');
-        products.forEach(product => {
-            container.insertAdjacentHTML('beforeend', product);
+        additionalProducts.forEach(product => {
+            container.insertAdjacentHTML('beforeend', `
+                <div class="group relative bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
+                    <a href="/product/${product.id}">
+                        <img src="${product.image}" alt="${product.title}" class="w-full h-[400px] object-cover">
+                    </a>
+                    <div class="p-4 text-center">
+                        <span class="block text-gray-800 font-semibold text-lg">${product.title}</span>
+                        <span class="block text-gray-600">${product.price}</span>
+                        <form action="{{ route('cart.add') }}" method="POST" class="mt-2">
+                            @csrf
+                            <input type="hidden" name="product_id" value="${product.id}">
+                            <button type="submit" class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-all">
+                                Add to Cart
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            `);
         });
 
-        // Optionally, hide the button after loading all products
-        this.style.display = 'none';
+        this.style.display = 'none'; // Hide button after loading all products
     });
 </script>
-
 @endsection

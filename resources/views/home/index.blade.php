@@ -1,64 +1,33 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto px-6 py-12">
-
-    <!-- Carousel Section -->
-    <div id="carouselExample" class="carousel slide mb-12" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            <!-- Slide 1 -->
-            <div class="carousel-item active">
-                <img src="assets/banner_kids.png" alt="Kids" class="d-block w-100 rounded-lg shadow-md">
-            </div>
-            <!-- Slide 2 -->
-            <div class="carousel-item">
-                <img src="assets/banner_women.png" alt="Women" class="d-block w-100 rounded-lg shadow-md">
-            </div>
-            <!-- Slide 3 -->
-            <div class="carousel-item">
-                <img src="assets/banner_kids.png" alt="Men" class="d-block w-100 rounded-lg shadow-md">
-            </div>
-        </div>
+<div class="bg-white py-16">
+    <!-- Header Section -->
+    <div class="max-w-7xl mx-auto text-center mb-12">
+        <h2 class="text-5xl font-extrabold text-gray-800 tracking-wide">Our Popular Products</h2>
+        <p class="text-gray-600 text-lg italic">Explore the latest trends and styles.</p>
     </div>
 
-    <!-- Fashion Products Section -->
-    <div class="text-center mb-12">
-        <h2 class="text-3xl font-bold text-gray-800">Our Popular Products</h2>
-        <p class="text-lg text-gray-600 mt-4">Explore the latest trends and styles.</p>
-    </div>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-        <!-- Product 1 -->
-        <div class="bg-white rounded-lg shadow-lg p-6">
-            <img src="https://via.placeholder.com/300x300?Text=Shirt+1" alt="Product 1" class="w-full h-64 object-cover rounded-lg mb-4">
-            <h3 class="text-xl font-semibold text-gray-800">Fashionable Shirt</h3>
-            <p class="text-lg text-gray-600">$39.99</p>
-            <button class="mt-4 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700">Add to Cart</button>
+    <!-- Popular Products Section -->
+    <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+        @foreach(array_slice($popularProducts, 0, 4) as $product) <!-- Display only the first 4 products -->
+        <div class="group relative bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
+            <a href="{{ route('product.show', ['id' => $product['id']]) }}">
+                <img src="{{ asset($product['image']) }}" alt="{{ $product['title'] }}" class="w-full h-72 object-cover"> <!-- Adjusted height -->
+            </a>
+            <div class="p-4 text-center">
+                <h3 class="text-gray-800 font-semibold text-lg">{{ $product['title'] }}</h3>
+                <p class="text-gray-600">{{ $product['price'] }}</p>
+                <form action="{{ route('cart.add') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="product_id" value="{{ $product['id'] }}">
+                    <button type="submit" class="mt-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-all">
+                        Add to Cart
+                    </button>
+                </form>
+            </div>
         </div>
-
-        <!-- Product 2 -->
-        <div class="bg-white rounded-lg shadow-lg p-6">
-            <img src="https://via.placeholder.com/300x300?Text=Shirt+2" alt="Product 2" class="w-full h-64 object-cover rounded-lg mb-4">
-            <h3 class="text-xl font-semibold text-gray-800">Trendy Hoodie</h3>
-            <p class="text-lg text-gray-600">$49.99</p>
-            <button class="mt-4 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700">Add to Cart</button>
-        </div>
-
-        <!-- Product 3 -->
-        <div class="bg-white rounded-lg shadow-lg p-6">
-            <img src="https://via.placeholder.com/300x300?Text=Shoes+1" alt="Product 3" class="w-full h-64 object-cover rounded-lg mb-4">
-            <h3 class="text-xl font-semibold text-gray-800">Stylish Sneakers</h3>
-            <p class="text-lg text-gray-600">$59.99</p>
-            <button class="mt-4 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700">Add to Cart</button>
-        </div>
-
-        <!-- Product 4 -->
-        <div class="bg-white rounded-lg shadow-lg p-6">
-            <img src="https://via.placeholder.com/300x300?Text=Bag+1" alt="Product 4" class="w-full h-64 object-cover rounded-lg mb-4">
-            <h3 class="text-xl font-semibold text-gray-800">Leather Handbag</h3>
-            <p class="text-lg text-gray-600">$79.99</p>
-            <button class="mt-4 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700">Add to Cart</button>
-        </div>
+        @endforeach
     </div>
 </div>
 @endsection
