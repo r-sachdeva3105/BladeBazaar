@@ -5,6 +5,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\DashboardController;
 
 $mockData = include base_path('routes/mockData.php');
 
@@ -243,23 +248,17 @@ Route::post('/checkout', function (Request $request) {
 
 // Admin Routes
 Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('/categories', function () {
-        return view('admin.categories');
-    })->name('categories');
+    // Categories CRUD
+    Route::resource('categories', CategoryController::class);
 
-    Route::get('/orders', function () {
-        return view('admin.orders');
-    })->name('orders');
+    // Products CRUD
+    Route::resource('products', ProductController::class);
 
-    Route::get('/products', function () {
-        return view('admin.products');
-    })->name('products');
+    // Orders CRUD
+    Route::resource('orders', OrderController::class);
 
-    Route::get('/users', function () {
-        return view('admin.users');
-    })->name('users');
+    // Users CRUD
+    Route::resource('users', UserController::class);
 });

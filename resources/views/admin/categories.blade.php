@@ -5,9 +5,9 @@
     <!-- Page Heading -->
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-3xl font-semibold text-gray-800">Categories</h1>
-        <a href="#" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-            Add Category
-        </a>
+        <a href="{{ route('admin.categories.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+    Add Category
+</a>
     </div>
 
     <!-- Table -->
@@ -22,17 +22,22 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td class="border border-gray-300 px-4 py-2">1</td>
-                    <td class="border border-gray-300 px-4 py-2">Electronics</td>
-                    <td class="border border-gray-300 px-4 py-2">Devices and gadgets</td>
-                    <td class="border border-gray-300 px-4 py-2">
-                        <a href="#" class="text-blue-500 hover:underline">Edit</a> |
-                        <a href="#" class="text-red-500 hover:underline">Delete</a>
-                    </td>
-                </tr>
-                <!-- Add more rows as needed -->
-            </tbody>
+    @foreach($categories as $category)
+    <tr>
+        <td class="border border-gray-300 px-4 py-2">{{ $category['id'] }}</td>
+        <td class="border border-gray-300 px-4 py-2">{{ $category['name'] }}</td>
+        <td class="border border-gray-300 px-4 py-2">{{ $category['description'] }}</td>
+        <td class="border border-gray-300 px-4 py-2">
+            <a href="{{ route('admin.categories.edit', $category['id']) }}" class="text-blue-500">Edit</a> |
+            <form action="{{ route('admin.categories.destroy', $category['id']) }}" method="POST" style="display:inline;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="text-red-500">Delete</button>
+            </form>
+        </td>
+    </tr>
+    @endforeach
+</tbody>
         </table>
     </div>
 </div>

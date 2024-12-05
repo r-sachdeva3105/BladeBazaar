@@ -2,15 +2,13 @@
 
 @section('content')
 <div class="container mx-auto p-4">
-    <!-- Page Heading -->
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-3xl font-semibold text-gray-800">Products</h1>
-        <a href="#" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+        <a href="{{ route('admin.products.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
             Add Product
         </a>
     </div>
 
-    <!-- Table -->
     <div class="bg-white rounded-lg shadow-md p-6">
         <table class="min-w-full border-collapse border border-gray-300">
             <thead class="bg-gray-200">
@@ -23,17 +21,22 @@
                 </tr>
             </thead>
             <tbody>
+                @foreach($products as $product)
                 <tr>
-                    <td class="border border-gray-300 px-4 py-2">1</td>
-                    <td class="border border-gray-300 px-4 py-2">Laptop</td>
-                    <td class="border border-gray-300 px-4 py-2">Electronics</td>
-                    <td class="border border-gray-300 px-4 py-2">$1200</td>
+                    <td class="border border-gray-300 px-4 py-2">{{ $product['id'] }}</td>
+                    <td class="border border-gray-300 px-4 py-2">{{ $product['title'] }}</td>
+                    <td class="border border-gray-300 px-4 py-2">{{ $product['category'] ?? 'N/A' }}</td>
+                    <td class="border border-gray-300 px-4 py-2">{{ $product['price'] }}</td>
                     <td class="border border-gray-300 px-4 py-2">
-                        <a href="#" class="text-blue-500 hover:underline">Edit</a> |
-                        <a href="#" class="text-red-500 hover:underline">Delete</a>
+                        <a href="{{ route('admin.products.edit', $product['id']) }}" class="text-blue-500 hover:underline">Edit</a> |
+                        <form action="{{ route('admin.products.destroy', $product['id']) }}" method="POST" class="inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-red-500 hover:underline">Delete</button>
+                        </form>
                     </td>
                 </tr>
-                <!-- Add more rows as needed -->
+                @endforeach
             </tbody>
         </table>
     </div>

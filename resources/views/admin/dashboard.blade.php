@@ -14,7 +14,7 @@
         <a href="admin/categories" class="bg-white rounded-lg shadow-md p-6 flex items-center justify-between border-r-4 border-blue-500 hover:bg-blue-100">
             <div>
                 <h3 class="text-sm font-semibold text-gray-600 uppercase">Category</h3>
-                <p class="text-lg font-bold text-gray-800">4</p>
+                <p class="text-lg font-bold text-gray-800">{{ $categoriesCount }}</p>
             </div>
             <div>
                 <i class="fas fa-sitemap text-blue-500 text-3xl"></i>
@@ -25,7 +25,7 @@
         <a href="admin/products" class="bg-white rounded-lg shadow-md p-6 flex items-center justify-between border-r-4 border-red-500 hover:bg-red-100">
             <div>
                 <h3 class="text-sm font-semibold text-gray-600 uppercase">Products</h3>
-                <p class="text-lg font-bold text-gray-800">36</p>
+                <p class="text-lg font-bold text-gray-800">{{ $totalProducts }}</p>
             </div>
             <div>
                 <i class="fas fa-cubes text-red-500 text-3xl"></i>
@@ -36,7 +36,7 @@
         <a href="admin/orders" class="bg-white rounded-lg shadow-md p-6 flex items-center justify-between border-r-4 border-green-500 hover:bg-green-100">
             <div>
                 <h3 class="text-sm font-semibold text-gray-600 uppercase">Orders</h3>
-                <p class="text-lg font-bold text-gray-800">10</p>
+                <p class="text-lg font-bold text-gray-800">{{ $ordersCount }}</p>
             </div>
             <div>
                 <i class="fas fa-clipboard-list text-green-500 text-3xl"></i>
@@ -47,7 +47,7 @@
         <a href="admin/users" class="bg-white rounded-lg shadow-md p-6 flex items-center justify-between border-r-4 border-yellow-500 hover:bg-yellow-100">
             <div>
                 <h3 class="text-sm font-semibold text-gray-600 uppercase">Users</h3>
-                <p class="text-lg font-bold text-gray-800">5</p>
+                <p class="text-lg font-bold text-gray-800">{{ $usersCount }}</p>
             </div>
             <div>
                 <i class="fas fa-users text-yellow-500 text-3xl"></i>
