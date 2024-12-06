@@ -10,6 +10,13 @@
     </div>
 
     <div class="bg-white rounded-lg shadow-md p-6">
+        <!-- Display a message if there is any success notification -->
+        @if(session('success'))
+        <div class="mb-4 p-2 bg-green-100 text-green-800">
+            {{ session('success') }}
+        </div>
+        @endif
+
         <table class="min-w-full border-collapse border border-gray-300">
             <thead class="bg-gray-200">
                 <tr>

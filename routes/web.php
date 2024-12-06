@@ -163,7 +163,12 @@ Route::post('/cart/remove', function (Request $request) {
 })->name('cart.remove');
 
 
+
 // Product Details
+Route::delete('/admin/products/{id}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
+
+
+
 Route::get('/product/{id}', function ($id) {
     $mockData = include base_path('routes/mockData.php');
     $allProducts = array_merge(

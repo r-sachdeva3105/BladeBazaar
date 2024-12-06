@@ -8,5 +8,10 @@
         "name": "rajat",
         "email": "rajat@humber.ca",
         "password": "$2y$12$wYLSghdp1BZz0DgnnToHlOeu2IzHGbRxJH1CctYowN3BcK3zImkRa"
+    },
+    {
+        "name": "abdun",
+        "email": "abdun@gmail.com",
+        "password": "$2y$12$ahG9rUdlv9aA9Tj3YFuNhe.dBa5m5sSH.Xk47QcAYUfX2qtbmopj2"
     }
 ]

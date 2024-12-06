@@ -12,18 +12,48 @@ class CategoryController extends Controller
 
     public function __construct()
     {
+        // Path to the mockData.php file
         $this->mockDataPath = base_path('routes/mockData.php');
+        $this->loadMockData();
+    }
+
+    private function loadMockData()
+    {
+        // Load the mock data from the PHP file
         $this->mockData = include $this->mockDataPath;
+    }
+
+    private function saveMockData()
+    {
+        // Manually format the mock data into a valid PHP array syntax
+        $phpData = '<?php return ' . $this->arrayToPhp($this->mockData) . ';';
+
+        // Save it back to the mockData.php file
+        file_put_contents($this->mockDataPath, $phpData);
+    }
+
+    private function arrayToPhp($array)
+    {
+        $output = [];
+        foreach ($array as $key => $value) {
+            // If the value is an array, call this function recursively
+            if (is_array($value)) {
+                $output[] = "'" . addslashes($key) . "' => " . $this->arrayToPhp($value);
+            } else {
+                // If it's a scalar value (string, integer, etc.), escape the string and format
+                $output[] = "'" . addslashes($key) . "' => '" . addslashes($value) . "'";
+            }
+        }
+        
+        return '[' . implode(', ', $output) . ']';
     }
 
     public function index()
     {
-        $categories = [
-            ['id' => 1, 'name' => 'men', 'description' => 'Men\'s Fashion Collection'],
-            ['id' => 2, 'name' => 'women', 'description' => 'Women\'s Fashion Collection'],
-            ['id' => 3, 'name' => 'kids', 'description' => 'Kids\' Fashion Collection']
-        ];
-        return view('admin.categories', ['categories' => collect($categories)]);
+        // Fetch categories from mock data
+        $categories = collect($this->mockData);
+
+        return view('admin.categories', ['categories' => $categories]);
     }
 
     public function create()
@@ -34,71 +64,96 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'description' => 'required'
+            'name' => 'required', // Ensure the category name is provided
         ]);
-
+    
+        $name = strtolower($request->input('name'));
+    
+        // Check if the category already exists in the mock data
+        if (array_key_exists($name, $this->mockData)) {
+            return redirect()->route('admin.categories.index')
+                ->with('error', 'Category already exists.');
+        }
+    
+        // Add the new category with an empty array (no products) at the end of the mock data
+        $this->mockData[$name] = []; // Initialize with an empty array for products
+    
+        // Save the updated mock data back to the file
+        $this->saveMockData();
+    
         return redirect()->route('admin.categories.index')
-            ->with('info', 'Adding new categories is not supported in mock data mode');
+            ->with('success', 'Category added successfully!');
     }
+    
 
-    public function edit($id)
+    public function edit($name)
     {
-        $mockData = include $this->mockDataPath;
-        $categories = [
-            ['id' => 1, 'name' => 'men', 'description' => 'Men\'s Fashion Collection'],
-            ['id' => 2, 'name' => 'women', 'description' => 'Women\'s Fashion Collection'],
-            ['id' => 3, 'name' => 'kids', 'description' => 'Kids\' Fashion Collection']
-        ];
-        
-        $category = collect($categories)->firstWhere('id', (int)$id);
-        
+        // Fetch category from mock data
+        $category = $this->mockData[$name] ?? null;
+
         if (!$category) {
             return redirect()->route('admin.categories.index')
-                ->with('error', 'Category not found');
+                ->with('error', 'Category not found.');
         }
-        
-        return view('admin.categories.edit', compact('category'));
+
+        // Pass both category name and description to the view
+        return view('admin.categories.edit', compact('name', 'category'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $name)
     {
         $request->validate([
             'name' => 'required',
-            'description' => 'required'
+            'description' => 'required', // Ensure description is required when updating
+            'products' => 'required|array', // Ensure products are included
         ]);
-
-        $mockData = include $this->mockDataPath;
-        $categories = [
-            ['id' => 1, 'name' => 'men', 'description' => 'Men\'s Fashion Collection'],
-            ['id' => 2, 'name' => 'women', 'description' => 'Women\'s Fashion Collection'],
-            ['id' => 3, 'name' => 'kids', 'description' => 'Kids\' Fashion Collection']
-        ];
-
-        $category = collect($categories)->firstWhere('id', (int)$id);
+    
+        // Fetch the category from the mock data
+        $category = $this->mockData[$name] ?? null;
+    
         if (!$category) {
             return redirect()->route('admin.categories.index')
-                ->with('error', 'Category not found');
+                ->with('error', 'Category not found.');
         }
+    
+        // Update the category description
+        $this->mockData[$name]['description'] = $request->input('description');
+    
+        // Update products in the category
+        $products = [];
+        foreach ($request->input('products') as $product) {
+            // Ensure products reflect the correct data (may not be necessary if ProductController handles the update)
+            $products[] = [
+                'id' => $product['id'],
+                'image' => $product['image'],
+                'title' => $product['title'],
+                'price' => $product['price'],
+                'category' => $name, // Ensure the category is correctly assigned
+            ];
+        }
+    
+        $this->mockData[$name][$name] = $products;
+    
+        $this->saveMockData();
+    
+        return redirect()->route('admin.categories.index')
+            ->with('success', 'Category updated successfully!');
+    }
 
-        // Prevent changing category names to maintain data structure
-        if (strtolower($request->input('name')) !== strtolower($category['name'])) {
+    public function destroy($name)
+    {
+        // Fetch the category from the mock data
+        if (!array_key_exists($name, $this->mockData)) {
             return redirect()->route('admin.categories.index')
-                ->with('error', 'Category name cannot be changed in mock data mode');
+                ->with('error', 'Category not found.');
         }
 
-        return redirect()->route('admin.categories.index')
-            ->with('info', 'Category updated successfully');
-    }
+        // Delete the category from the mock data
+        unset($this->mockData[$name]);
 
-    public function destroy($id)
-    {
-        return redirect()->route('admin.categories.index')
-            ->with('info', 'Deleting categories is not supported in mock data mode');
-    }
+        $this->saveMockData();
 
-    public function show($id)
-    {
-        return redirect()->route('admin.categories.index');
+        return redirect()->route('admin.categories.index')
+            ->with('success', 'Category deleted successfully!');
     }
 }
