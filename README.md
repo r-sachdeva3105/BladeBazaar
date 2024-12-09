@@ -100,7 +100,7 @@ networks:
    docker-compose up --build
    ```
 
-   ![image](screenshots-docker/d5.png)
+   ![image](screenshots-docker/d5.PNG)
 
 2. **Access the Application**:
    Once the containers are running, you can access the application in your browser at:
@@ -178,7 +178,7 @@ Once the setup is complete, you can build a Docker image of the app using:
 docker build -t bladebazaar-app:latest .
 ```
 
-![image](screenshots-docker/d6.png)
+![image](screenshots-docker/d6.PNG)
 
 To run the container using the image:
 
