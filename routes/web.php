@@ -242,11 +242,41 @@ Route::post('/checkout', function (Request $request) {
         'cvv' => 'required|digits:3',
     ]);
 
+    // Load existing orders from the mock_orders.json file
+    $mockOrdersPath = storage_path('mock_orders.json');
+    $mockOrders = File::exists($mockOrdersPath) ? json_decode(File::get($mockOrdersPath), true) : [];
+
+    // Create a new order
+    $newOrder = [
+        'id' => count($mockOrders) + 1, // Auto-increment ID
+        'customer' => Session::get('user')['name'], // Customer name from session
+        'total' => array_reduce($cart, fn($carry, $item) => $carry + $item['quantity'] * (float) substr($item['price'], 1), 0),
+        'status' => 'Pending', // Default status
+        'items' => $cart, // Store cart items
+    ];
+
+    // Add the new order to the mock orders array
+    $mockOrders[] = $newOrder;
+
+    // Save the updated orders back to the mock_orders.json file
+    File::put($mockOrdersPath, json_encode($mockOrders, JSON_PRETTY_PRINT));
+
     // Clear the cart after checkout
     Session::forget('cart');
 
     return redirect()->route('home')->with('success', 'Your order has been placed successfully!');
 })->name('checkout.perform');
+
+// User Profile
+Route::get('/profile', function () {
+    $user = Session::get('user');
+    $orders = json_decode(File::get(storage_path('mock_orders.json')), true) ?? [];
+
+    // Filter orders for the logged-in user
+    $userOrders = collect($orders)->filter(fn($order) => $order['customer'] == $user['name'])->all();
+
+    return view('profile.index', compact('user', 'userOrders'));
+})->name('user.profile');
 
 
 //----------------------------------------ADMIN---------------------------------------------------------------------------------------------------------//

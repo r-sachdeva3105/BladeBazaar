@@ -53,7 +53,7 @@
 
                     <!-- Conditional Links -->
                     @if (Session::has('user'))
-                        <li><a href="#" class="hover:text-gray-400">Welcome, {{ Session::get('user.name') }}</a></li>
+                        <li><a href="{{ route('user.profile') }}" class="hover:text-gray-400">Welcome, {{ Session::get('user.name') }}</a></li>
                         <li>
                             <form action="{{ route('logout') }}" method="POST" class="inline">
                                 @csrf
@@ -64,6 +64,7 @@
                         <li><a href="{{ route('login') }}" class="hover:text-gray-400">Login</a></li>
                         <li><a href="{{ route('register') }}" class="hover:text-gray-400">Register</a></li>
                     @endif
+
 
                     <li><a href="/cart" class="hover:text-gray-400">
                             <!-- Cart Icon -->

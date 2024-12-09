@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class OrderController extends Controller
 {
@@ -11,12 +12,8 @@ class OrderController extends Controller
 
     public function __construct()
     {
-        // Create mock order data
-        $this->orders = collect([
-            ['id' => 1, 'customer' => 'John Doe', 'total' => 200, 'status' => 'Pending'],
-            ['id' => 2, 'customer' => 'Jane Smith', 'total' => 150, 'status' => 'Completed'],
-            ['id' => 3, 'customer' => 'Bob Johnson', 'total' => 300, 'status' => 'Processing'],
-        ]);
+        $mockOrdersPath = storage_path('mock_orders.json');
+        $this->orders = collect(File::exists($mockOrdersPath) ? json_decode(File::get($mockOrdersPath), true) : []);
     }
 
     public function index()
@@ -35,8 +32,12 @@ class OrderController extends Controller
 
     public function update(Request $request, $id)
     {
-        $order = $this->orders->firstWhere('id', $id);
-        if (!$order) {
+        $mockOrdersPath = storage_path('mock_orders.json');
+        $mockOrders = File::exists($mockOrdersPath) ? json_decode(File::get($mockOrdersPath), true) : [];
+
+        $index = collect($mockOrders)->search(fn($order) => $order['id'] == $id);
+
+        if ($index === false) {
             return redirect()->route('admin.orders.index')->with('error', 'Order not found.');
         }
 
@@ -44,15 +45,25 @@ class OrderController extends Controller
             'status' => 'required|in:Pending,Processing,Completed,Cancelled',
         ]);
 
-        $index = $this->orders->search(fn($o) => $o['id'] == $id);
-        $this->orders[$index]['status'] = $request->input('status');
+        // Update the order status
+        $mockOrders[$index]['status'] = $request->input('status');
+
+        // Save the updated orders back to the file
+        File::put($mockOrdersPath, json_encode($mockOrders, JSON_PRETTY_PRINT));
 
         return redirect()->route('admin.orders.index')->with('success', 'Order status updated successfully.');
     }
 
+
     public function destroy($id)
     {
-        $this->orders = $this->orders->filter(fn($order) => $order['id'] != $id);
+        $mockOrdersPath = storage_path('mock_orders.json');
+        $mockOrders = File::exists($mockOrdersPath) ? json_decode(File::get($mockOrdersPath), true) : [];
+
+        $mockOrders = collect($mockOrders)->reject(fn($order) => $order['id'] == $id)->values()->all();
+
+        File::put($mockOrdersPath, json_encode($mockOrders, JSON_PRETTY_PRINT));
+
         return redirect()->route('admin.orders.index')->with('success', 'Order deleted successfully.');
     }
 }

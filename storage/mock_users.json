@@ -1,17 +1,17 @@
-[
-    {
-        "name": "pranav",
-        "email": "pranav@humber.ca",
-        "password": "$2y$12$oAiXz.GdOW8paf1Y1a8W1OoJBwC.Ijt3MizfqlMZ3f5PPtPiAIlwC"
-    },
-    {
+{
+    "1": {
         "name": "rajat",
         "email": "rajat@humber.ca",
         "password": "$2y$12$wYLSghdp1BZz0DgnnToHlOeu2IzHGbRxJH1CctYowN3BcK3zImkRa"
     },
-    {
+    "2": {
         "name": "abdun",
         "email": "abdun@gmail.com",
         "password": "$2y$12$ahG9rUdlv9aA9Tj3YFuNhe.dBa5m5sSH.Xk47QcAYUfX2qtbmopj2"
+    },
+    "3": {
+        "name": "pranav",
+        "email": "pranav@humber.ca",
+        "password": "$2y$12$iSrs7KoIfOVxXte55HEnSeYBRIPx1\/2nZCed1omPgJV\/XU6ld8TNa"
     }
-]
+}

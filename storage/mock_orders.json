@@ -1,0 +1,34 @@
+[
+    {
+        "id": 1,
+        "customer": "pranav",
+        "total": 49.99,
+        "status": "Completed",
+        "items": {
+            "13": {
+                "id": "13",
+                "image": "assets\/products\/product_13.png",
+                "title": "Hoodie",
+                "price": "$49.99",
+                "category": "men",
+                "quantity": 1
+            }
+        }
+    },
+    {
+        "id": 2,
+        "customer": "pranav",
+        "total": 29.99,
+        "status": "Pending",
+        "items": {
+            "3": {
+                "id": "3",
+                "image": "assets\/products\/product_3.png",
+                "title": "Sports Tank Top",
+                "price": "$29.99",
+                "category": "women",
+                "quantity": 1
+            }
+        }
+    }
+]
