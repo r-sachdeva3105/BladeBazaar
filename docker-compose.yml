@@ -23,6 +23,16 @@ services:
     networks:
       - laravel
 
+  node:
+    image: node:18
+    container_name: laravel_node
+    working_dir: /var/www
+    volumes:
+      - .:/var/www
+    command: sh -c "npm install && npm run dev"
+    networks:
+      - laravel
+
 networks:
   laravel:
     driver: bridge
